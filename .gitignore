@@ -1,0 +1,42 @@
+# Visual Studio user settings and local caches
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.VC.db
+*.VC.opendb
+*.sdf
+*.ipch
+
+# Build output directories
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+Win32/
+[Bb]in/
+[Oo]bj/
+
+# C/C++ build artifacts
+*.exe
+*.dll
+*.lib
+*.exp
+*.obj
+*.pdb
+*.ilk
+*.idb
+*.iobj
+*.ipdb
+*.pch
+*.tlog
+*.lastbuildstate
+*.recipe
+*.vcxproj.FileListAbsolute.txt
+*.log
+*.opendb
+*.vsidx
+
+# Visual Studio generated files
+Generated Files/
