@@ -16,6 +16,81 @@
 - 「クラスを使えばOOPなのか？」という疑問を持っている人
 - 手続き型とオブジェクト指向の設計上の違いを比較したい人
 
+## オブジェクト指向とはそもそも何か？
+
+### 一言でいうと
+
+オブジェクト指向は、プログラムを単なる命令の並びとしてだけでなく、**状態と振る舞いを持つ複数のオブジェクトが、共通の役割に従って協調する仕組み**として設計する考え方です。
+
+このプロジェクトでは、次のように対応しています。
+
+| オブジェクト指向の考え方 | このプロジェクトでの例 |
+|---|---|
+| オブジェクト | 実際に生成された `Player` と `Enemy` |
+| 状態 | 名前、HP、現在の手 |
+| 振る舞い | `Update()`、`Damage()`、`SelectHand()` |
+| 共通の役割・契約 | 抽象クラス `Actor` |
+| 実体ごとの差 | `Player::SelectHand()` と `Enemy::SelectHand()` |
+| オブジェクトから独立したルール | `Janken::Judge()` |
+
+クラスはオブジェクトを作るための重要な道具ですが、**クラスを書いたこと自体がオブジェクト指向なのではありません**。どのオブジェクトがどの責務を持つか、利用側が具体的な型をどこまで意識せずに済むか、実体ごとの違いを共通の操作から切り替えられるか、といった設計も重要です。
+
+また、「オブジェクト指向」の定義は歴史上ひとつに固定されてきたわけではありません。Simulaから続く考え方ではクラス、継承、仮想関数が重視され、Smalltalkを率いたAlan Kayは、互いの内部を隠したオブジェクト同士がメッセージを送り合うことを特に重視しました。この教材ではC++を使うため、主に**カプセル化、継承、抽象化、動的ポリモーフィズム、責務の分担**に注目します。
+
+### 誰か一人が突然発明したのか？
+
+オブジェクト指向は、一人の発明者が完成形を一度に提案したものではありません。特に重要なのが、次の2つの流れです。
+
+1. **Ole-Johan DahlとKristen NygaardによるSimula**
+
+   1962年頃からノルウェー計算センターでシミュレーション言語Simulaの開発が進み、1967年のSimula 67では、クラス、オブジェクト、継承、仮想的な呼び出しなど、後のOOPにつながる概念が形になりました。2人はこの功績により2001年のACMチューリング賞を受賞しています。
+
+2. **Alan KayたちによるSmalltalk**
+
+   Alan Kay本人の回想では、1967年頃に「object-oriented programming」という言葉を使い始めました。1970年代にはXerox PARCでDan Ingalls、Adele GoldbergらとSmalltalkを開発し、オブジェクト同士がメッセージを送り合う設計を、言語だけでなく開発環境やGUIと一体にして示しました。
+
+したがって、「最初の重要な言語的基盤はDahlとNygaardのSimula」「OOPという名称とSmalltalkによる思想の展開はAlan Kayたち」と捉えると、歴史を単純化しすぎずに理解できます。
+
+### いつ頃広まったのか？
+
+| 時期 | 主な動き |
+|---|---|
+| 1960年代 | Simulaがクラス、継承、仮想呼び出しにつながる仕組みを実現 |
+| 1970年代 | Xerox PARCでSmalltalkが発展し、OOPとGUI・対話的開発環境を結び付けた |
+| 1980年代 | Smalltalk-80、Objective-C、C++などが登場。1986年には最初のOOPSLAが開催された |
+| 1980年代後半～1990年代前半 | C++が産業界と大学へ急速に普及し、主要な開発ツールが対応した |
+| 1990年代以降 | Javaなどの普及もあり、OOPが一般的な教育・業務開発の選択肢になった |
+
+C++は1979年に「C with Classes」として開発が始まり、1985年に商用リリースされました。開発者Bjarne Stroustrupの記録によれば、1980年代に産業界と大学で広く使われるようになり、1990年頃には主要なコンピュータ・ソフトウェア企業が主要な実装手段として提供し始めています。
+
+### OOP以前は「シーケンシャルプログラミング」だったのか？
+
+大まかな感覚としては、処理手順を上から組み立てるプログラムが中心だった、という理解で構いません。ただし、歴史的・技術的には次の区別が必要です。
+
+- OOP以前に広く使われていた設計は、一般に**命令型プログラミング**、**手続き型プログラミング**、後には**構造化プログラミング**などと説明されます。
+- `sequential`（逐次的）という言葉も当時から存在しましたが、主に「並行・並列ではなく、処理を順番に実行する」という実行方式を表す言葉でした。
+- 手続き・手続き指向に相当する分類も早くから存在していたため、「OOPが登場してから初めて手続き型と名付けられた」とまでは言えません。ただし、OOPという別の設計軸が広まったことで、従来の方法との違いがより意識されるようになりました。
+- OOPも、各メソッドの中では命令を順番に実行します。そのため、**シーケンシャルとOOPは厳密な反対語ではありません**。
+- OOPが一般化する前のプログラマが、一般に自分たちを「非OOP」や「シーケンシャル派」と呼んでいたわけでもありません。新しい考え方が登場したことで、以前からあった方法の特徴が対比として見えやすくなった、と考えるのが自然です。
+
+この教材の両プロジェクトは、どちらも命令型・構造化・逐次的なプログラムです。この理由から、比較対象を「シーケンシャル版」ではなく、より正確に**手続き型中心版**と呼んでいます。違いは命令が順番に実行されるかどうかではなく、**具体的な処理を呼び出し側が選ぶのか、共通操作の先をオブジェクトへ任せるのか**です。
+
+### 従来のプログラマは混乱しなかったのか？
+
+すべてのプログラマが一様に混乱した、と断定することはできません。しかし、手続き型言語に慣れた人にとって、大きな発想の転換と抵抗があったことは当事者の記録から確認できます。
+
+Bjarne StroustrupはC++の歴史の中で、当時のソフトウェア開発者の一部がSmalltalkやSimulaなどの技術を、実用には高価すぎるものとして軽視していたと振り返っています。また、仮想関数の使い方や実行効率を説明し、受け入れてもらうことにも難しさがあったと記しています。C++がCとの互換性を強く残した理由のひとつも、既存の道具と考え方から段階的に移行できるようにするためでした。
+
+特に戸惑いやすかったのは、次のような点です。
+
+- `main()`を上から読むだけでは、最終的に呼ばれる処理が決まらない
+- 同じ `actors[i]->Update()` でも、実体によって内部の処理が変わる
+- データと、それを扱う処理を別々に考えるのではなく、責務としてオブジェクトへまとめる
+- 継承、抽象クラス、オーバーライド、動的ディスパッチといった新しい概念が加わる
+- 間接的な呼び出しが、実行速度やメモリにどの程度影響するのか分かりにくい
+
+逆に、OOPに慣れた後でも、何でも継承させる、すべてをクラスへ入れる、といった別の誤解が起こります。このプロジェクトが `Janken::Judge()` をActorから分離しているのは、**OOPとは、すべてをオブジェクトへ押し込むことではなく、適切な場所へ責務を分けること**でもあると示すためです。
+
 ## 2つのプロジェクト
 
 | プロジェクト | 設計 | 処理を選ぶ場所 |
@@ -149,3 +224,16 @@ Rock-paper-scissors.sln
 - 両方の `Actor` が持つ仮想デストラクタは、`Actor*` から派生オブジェクトを安全に `delete` するためのものです。手の選び方を切り替える仮想関数とは役割が異なります。
 - `new` と `delete` は、2つの設計を同じ形で比較しやすくするために使用しています。実際の開発では、所有権を安全に管理するために `std::unique_ptr` などのRAIIも検討します。
 - 「生成部分だけを差し替えられる」とは、`Actor` の契約を満たす派生クラスが用意されている場合の話です。新しいクラスそのものの実装が不要になるわけではありません。
+
+## 歴史に関する参考資料
+
+- Ole-Johan Dahl, [The Birth of Object Orientation: the Simula Languages](https://www.mn.uio.no/ifi/english/about/ole-johan-dahl/bibliography/the-birth-of-object-orientation-the-simula-languages.pdf)
+- Kristen Nygaard and Ole-Johan Dahl, [The Development of the SIMULA Languages](https://www.cs.tufts.edu/comp/150FP/archive/kristen-nygaard/hopl-simula.pdf)
+- Alan C. Kay, [The Early History of Smalltalk](https://doi.org/10.1145/155360.155364)
+- Alan Kay本人による用語の回想, [Dr. Alan Kay on the Meaning of “Object-Oriented Programming”](https://userpage.fu-berlin.de/~ram/pub/pub_jf47ht81Ht/doc_kay_oop_en)
+- Edsger W. Dijkstra, [Cooperating Sequential Processes](https://www.cs.utexas.edu/~EWD/transcriptions/EWD01xx/EWD123.html)
+- Edsger W. Dijkstra, [Notes on Structured Programming](https://www.cs.utexas.edu/~EWD/transcriptions/EWD02xx/EWD249/EWD249.html)
+- Bjarne Stroustrup, [A History of C++: 1979–1991](https://stroustrup.com/hopl2.pdf)
+- Bjarne Stroustrup, [C++ background](https://www.stroustrup.com/iso_release.html)
+- ACM SIGPLAN, [OOPSLA History](https://www.oopsla.org.splashcon.hosting.acm.org/oopsla-history/)
+- Oracle, [The Java Tutorial History](https://docs.oracle.com/javase/tutorial/information/history.html)
